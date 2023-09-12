@@ -5,11 +5,9 @@ function Rol() {
 
 return (
     <>
-    <Role></Role>
-    
+    <Role></Role>  
     </>
     )
 
 }
-
 export default Rol

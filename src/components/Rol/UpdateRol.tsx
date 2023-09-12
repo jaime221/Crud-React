@@ -18,7 +18,9 @@ const UpdateRoleModal = ({ roleId, roleNameToUpdate }: { roleId: number, roleNam
     const handleSubmit = async () => {
         if (newRoleName.trim() !== '') {
             await UpdateRol(roleId, newRoleName);
+
             closeModal();
+            
         }
     };
     return (

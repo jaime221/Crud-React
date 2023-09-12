@@ -1,7 +1,6 @@
 import React from 'react';
 import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.css';
-
 import { make_login } from '../services/auth.service';
 import { AddToken, RemoveToken } from '../utils/persists';
 import { MakeLoginData } from '../types/auth.type';
@@ -56,11 +55,8 @@ export async function MakeLogin(data_send: MakeLoginData) {
 }
 
 function AuthComponent() {
-
-
   function MakeLogout() {
     RemoveToken();
-
     Swal.fire({
       icon: 'info',
       title: 'Cierre de sesión',
@@ -69,7 +65,6 @@ function AuthComponent() {
       timer: 2000,
     });
   }
-
   return (
     <div>
       <button onClick={MakeLogout}>Cerrar Sesión</button>

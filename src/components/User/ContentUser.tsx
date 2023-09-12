@@ -1,57 +1,64 @@
-import React, { useEffect, useState } from 'react';
-import UseRolStore from '../../stores/rol.store';
-import CreateRol from '../../components/Rol/CreateRol';
-import UpdateRol from '../../components/Rol/UpdateRol';
+import { useState, useEffect } from "react";
+import UseUserStore from "../../stores/user.store";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import CreateUserModal from "../../components/User/CreateUser";
+import UpdateUser from "./UpdateUser";
 
-function RoleList() {
-    const { roles, GetAllRol, DeleteRol } = UseRolStore();
-    const [roleToDelete, setRoleToDelete] = useState<{ id: number; roleName: string } | null>(null);
+
+function UserList() {
+    const { users, GetAllUser, DeleteUser } = UseUserStore();
+    const [userToDelete, setUserToDelete] = useState<{ id: number; userEmail: string } | null>(null);
 
     useEffect(() => {
-        GetAllRol();
+        GetAllUser();
     }, []);
-    const handleDelete = (id: number, roleName: string) => {
-        setRoleToDelete({ id, roleName });
+    const handleDelete = (id: number, userEmail: string) => {
+        setUserToDelete({ id, userEmail });
     };
     const confirmDelete = () => {
-        if (roleToDelete) {
-            DeleteRol(roleToDelete.id);
-            toast.success(`Se ha eliminado el rol correctamente`, {
+        if (userToDelete) {
+            
+            DeleteUser(userToDelete.id);
+            toast.success(`Se ha eliminado el usuario  correctamente`, {
                 position: 'top-right',
                 autoClose: 3000,
             });
-
-            setRoleToDelete(null);
+          
+            setUserToDelete(null);
         }
     };
     const cancelDelete = () => {
-        setRoleToDelete(null);
+        setUserToDelete(null);
     };
-    return (
-        <div className="container mx-auto mt-8">
-            <h1 className="text-2xl font-semibold text-center mb-4">Lista de Roles</h1>
-            <div className="flex justify-end mb-4">
-                <CreateRol />
-            </div>
 
+    return (
+
+        <div className="container mx-auto mt-8">
+            <h1 className="text-2xl font-semibold text-center mb-4">Lista de Usuarios</h1>
+          
+            <div className="flex justify-end mb-4">
+                <CreateUserModal />
+            </div>
+         
             <div className="flex justify-center">
   <table className="min-w-full">
     <thead>
       <tr className="bg-gray-800 text-white">
-        <th className="py-2 px-4">Rol</th>
+        <th className="py-2 px-4">email</th>
+        <th className="py-2 px-4">rol</th>
         <th className="py-2 px-4">Acciones</th>
       </tr>
     </thead>
     <tbody className="bg-white divide-y divide-gray-200">
-      {roles.map((rol) => (
-        <tr key={rol.id}>
-          <td className="py-2 px-4 whitespace-nowrap align-top text-center">{rol.rol}</td>
-          <td className="py-2 px-4 whitespace-nowrap align-top text-center">
+      {users.map((user) => (
+        <tr key={user.id}>
+          <td className="py-2 px-4 whitespace-nowrap text-center">{user.email}</td>
+          <td className="py-2 px-4 whitespace-nowrap text-center">{user.rol.rol}</td>
+          <td className="py-2 px-4 whitespace-nowrap text-center">
             <div className="flex items-center justify-center space-x-2">
               <button
-                onClick={() => handleDelete(rol.id, rol.rol)}
+                onClick={() => handleDelete(user.id, user.email)}
                 className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full flex items-center"
               >
                 <svg
@@ -70,7 +77,7 @@ function RoleList() {
                 </svg>
                 Eliminar
               </button>
-              <UpdateRol roleId={rol.id} roleNameToUpdate={rol.rol} />
+              <UpdateUser id={user.id} newEmailUser={user.email} newRolId={user.rolId} />
             </div>
           </td>
         </tr>
@@ -79,15 +86,11 @@ function RoleList() {
   </table>
 </div>
 
-
-
-
-
             <ToastContainer />
-            {roleToDelete && (
+            {userToDelete && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
                     <div className="bg-white p-4 rounded-lg shadow-lg">
-                        <p>¿Estás seguro de que deseas eliminar el rol "{roleToDelete.roleName}"?</p>
+                        <p>¿Estás seguro de que deseas eliminar el rol "{userToDelete.userEmail}"?</p>
                         <div className="mt-4 flex justify-center">
                             <button
                                 onClick={confirmDelete}
@@ -106,7 +109,7 @@ function RoleList() {
                 </div>
             )}
         </div>
-    );
+    )
 }
 
-export default RoleList;
+export default UserList;
